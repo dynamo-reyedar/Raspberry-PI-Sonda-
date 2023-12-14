@@ -52,11 +52,11 @@ sudo apt-get install -y apt-transport-https ca-certificates curl software-proper
 print_checkmark "Installing necessary packages for Docker"
 
 echo -ne "Adding Docker’s official GPG key... "
-curl -fsSL https://download.docker.com/linux/raspbian/gpg | sudo apt-key add - >/dev/null 2>>$ERROR_LOG
+curl -fsSL https://download.docker.com/linux/raspbian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg >/dev/null 2>>$ERROR_LOG
 print_checkmark "Adding Docker’s official GPG key"
 
 echo -ne "Setting up Docker repository... "
-echo "deb [arch=armhf] https://download.docker.com/linux/raspbian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null 2>>$ERROR_LOG
+echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg arch=armhf] https://download.docker.com/linux/raspbian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null 2>>$ERROR_LOG
 print_checkmark "Setting up Docker repository"
 
 echo -ne "Updating package list... "
