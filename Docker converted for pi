@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# -----------------------------
+# Error Log File Configuration
+# -----------------------------
+SCRIPT_DIR=$(dirname "$0")
+ERROR_LOG="$SCRIPT_DIR/sonda_backend_install_error.log"
+
+# Ensure the error log is accessible and writable
+if [ ! -f "$ERROR_LOG" ]; then
+    sudo touch "$ERROR_LOG"
+fi
+sudo chmod 666 "$ERROR_LOG"
+
+# Clean up the error log at the start
+sudo truncate -s 0 "$ERROR_LOG"
+
+# -----------------------------
+# Color Definitions
+# -----------------------------
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# -----------------------------
+# Functions
+# -----------------------------
+# ... [Keep the existing functions as they are] ...
+
+# -----------------------------
+# Sudoers File Setup
+# -----------------------------
+# ... [Keep the existing sudoers file setup as it is] ...
+
+# -----------------------------
+# Hostname Configuration
+# -----------------------------
+# ... [Keep the existing hostname configuration as it is] ...
+
+# -----------------------------
+# Docker Installation
+# -----------------------------
+echo -e "${YELLOW}########## Install Docker ##########${NC}"
+
+echo -ne "Updating the apt package... "
+sudo apt-get update >/dev/null 2>>$ERROR_LOG
+print_checkmark "Updating the apt package"
+
+echo -ne "Installing necessary packages for Docker... "
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common >/dev/null 2>>$ERROR_LOG
+print_checkmark "Installing necessary packages for Docker"
+
+echo -ne "Adding Docker’s official GPG key... "
+curl -fsSL https://download.docker.com/linux/raspbian/gpg | sudo apt-key add - >/dev/null 2>>$ERROR_LOG
+print_checkmark "Adding Docker’s official GPG key"
+
+echo -ne "Setting up Docker repository... "
+echo "deb [arch=armhf] https://download.docker.com/linux/raspbian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null 2>>$ERROR_LOG
+print_checkmark "Setting up Docker repository"
+
+echo -ne "Updating package list... "
+sudo apt-get update >/dev/null 2>>$ERROR_LOG
+print_checkmark "Updating package list"
+
+echo -ne "Installing Docker... "
+sudo apt-get install -y docker-ce >/dev/null 2>>$ERROR_LOG
+print_checkmark "Installing Docker"
+
+# -----------------------------
+# Git Installation
+# -----------------------------
+# ... [Keep the existing git installation as it is] ...
+
+# -----------------------------
+# Repository Cloning
+# -----------------------------
+# ... [Keep the existing repository cloning as it is] ...
+
+# -----------------------------
+# NVIDIA Container Toolkit
+# -----------------------------
+# Removing NVIDIA toolkit installation since it's not applicable for Raspberry Pi
+
+# -----------------------------
+# TeamViewer Installation
+# -----------------------------
+# Removing TeamViewer installation since it's a specific use-case
+
+# -----------------------------
+# Packages installation
+# -----------------------------
+# ... [Keep the existing packages installation as it is] ...
+
+# -----------------------------
+# Completion
+# -----------------------------
+echo -e "${GREEN}##### Sonda-backend installation completed #####${NC}"
+echo "Note: If there were any errors, check the error log at $ERROR_LOG"
